@@ -4,6 +4,16 @@
     "outDir": "dist",
     "strict": true,
     "lib": ["esnext"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@api/*": ["api", "api/*"],
+      "@middleware/*": ["api/middleware/*"],
+      "@tasks/*": ["api/tasks/*"],
+      "@users/*": ["api/users/*"],
+    }
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   }
 }

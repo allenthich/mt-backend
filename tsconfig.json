@@ -8,6 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@api/*": ["api", "api/*"],
+      "@routes": ["routes.ts"],
       "@middleware/*": ["middleware/*"],
       "@tasks/*": ["api/tasks/*"],
       "@users/*": ["api/users/*"],

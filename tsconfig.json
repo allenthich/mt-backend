@@ -9,6 +9,7 @@
     "paths": {
       "@api/*": ["api", "api/*"],
       "@routes": ["routes.ts"],
+      "@middleware": ["middleware"],
       "@middleware/*": ["middleware/*"],
       "@tasks/*": ["api/tasks/*"],
       "@users/*": ["api/users/*"],

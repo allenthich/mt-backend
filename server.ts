@@ -1,4 +1,5 @@
 // Load the Express app file and listen on port
+import 'dotenv/config'
 import '@routes'
 import expressApp from '@api/app'
 

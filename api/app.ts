@@ -1,9 +1,9 @@
 import express from 'express'
-import jsonParser from '@middleware/jsonParser'
+import middlewares from '@middleware'
 
 const expressApp = express()
 
 // Application middleware
-expressApp.use(jsonParser)
+expressApp.use(middlewares)
 
 export default expressApp

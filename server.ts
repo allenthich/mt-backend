@@ -1,4 +1,5 @@
 // Load the Express app file and listen on port
+import '@routes'
 import expressApp from '@api/app'
 
 const port = process.env.PORT || 3000;

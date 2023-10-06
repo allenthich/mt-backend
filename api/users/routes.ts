@@ -1,12 +1,12 @@
 // Entry endpoints
 import express from 'express';
 
-import UserController from '@users/controller'
+import usersHandler from '@api/users/handlers'
 
 const usersRouter = express.Router()
 
-usersRouter.get('/', UserController.getUsers)
-usersRouter.get('/:id', UserController.getUser)
-// usersRouter.post('/', UserController.createUser)
+usersRouter.get('/', usersHandler.getUsers)
+usersRouter.get('/:id', usersHandler.getUser)
+// usersRouter.post('/', usersHandler.createUser)
 
 export default usersRouter

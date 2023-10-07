@@ -1,7 +1,7 @@
 import { Task, User, Prisma } from '@prisma/client'
 import { faker } from "@faker-js/faker";
 
-const NUM_FAKE_USERS: number = 5
+const NUM_FAKE_USERS: number = 1
 
 let fakeUsers: Prisma.UserCreateInput[] = []
 
@@ -9,18 +9,15 @@ const createFakeTask = (): Prisma.TaskCreateInput => {
   const task: Prisma.TaskCreateInput = {
     id: faker.string.uuid(),
     title: faker.word.verb(),
-    content: null,
-    completed: false,
-    viewCount: 0,
-    createdAt: null,
-    updatedAt: null
+    description: faker.lorem.word(),
   }
   return task
 }
 
 const createFakeUserWithTasks = (): Prisma.UserCreateInput => {
+  const userId = faker.string.uuid()
   const user: Prisma.UserCreateInput = {
-    id: faker.string.uuid(),
+    id: userId,
     email: faker.internet.email(),
     name: faker.person.firstName(),
     tasks: {

@@ -22,7 +22,7 @@ model Task {
   status            TaskStatus    @default(TODO)
   priority          TaskPriority  @default(LOW)
   dueDate           DateTime?
-  assignee          String
+  assigneeId        String?
   creator           User?     @relation(fields: [creatorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   creatorId         String?
   creationDate      DateTime? @default(now())

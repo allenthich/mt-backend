@@ -7,11 +7,11 @@ const userData: Prisma.UserCreateInput[] = fakeUsers
 
 async function main() {
   // Purge existing records in the database
-  // await prisma.user.deleteMany()
-  // console.log('Deleted records in user table')
+  await prisma.user.deleteMany()
+  console.log('Deleted records in user table')
 
-  // await prisma.task.deleteMany()
-  // console.log('Deleted records in task table')
+  await prisma.task.deleteMany()
+  console.log('Deleted records in task table')
 
   console.log(`Start seeding ...`)
   for (const u of userData) {

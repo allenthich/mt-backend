@@ -13,6 +13,7 @@
       "@middleware/*": ["middleware/*"],
       "@tasks/*": ["api/tasks/*"],
       "@users/*": ["api/users/*"],
+      "@utils/*": ["utils/*"],
     }
   },
   "ts-node": {

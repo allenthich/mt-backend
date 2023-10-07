@@ -1,7 +1,9 @@
-import logger from '@middleware/logger'
 import jsonParser from '@middleware/jsonParser'
+import { pinoHttpLogger } from '@utils/logger'
+import { handleErrors } from '@middleware/handleErrors'
 
 export default [
-    logger,
-    jsonParser
+    jsonParser,
+    pinoHttpLogger,
+    handleErrors
 ]

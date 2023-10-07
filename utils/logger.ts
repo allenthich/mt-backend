@@ -13,6 +13,10 @@ if (process.env.NODE_ENV === 'development') {
     }
 }
 
-const logger = pino(pinoOptions)
+const pinoHttpLogger = pino(pinoOptions)
+const logger = pinoHttpLogger.logger
 
-export default logger
+export {
+    pinoHttpLogger,
+    logger
+}

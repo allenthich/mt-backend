@@ -1,6 +1,6 @@
 // Load the Express app file and listen on port
 import 'dotenv/config'
-import expressApp from '@api/app'
+import { expressApp } from '@api/app'
 import { logger } from '@utils/logger'
 
 // Global error handling for uncaught exceptions and unhandled rejections

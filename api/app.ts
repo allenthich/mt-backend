@@ -1,12 +1,29 @@
 import express from 'express'
-import { middlewares } from '@middleware'
+import {
+    parseJSON,
+    pinoHttpLogger,
+    handleErrors
+} from '@middleware'
+// import { registrationRouter } from '@registration/routes'
+// import { loginRouter } from '@login/routes'
 import { usersRouter } from '@users/routes'
+import { tasksRouter } from '@tasks/routes'
 
-export const expressApp = express()
+const expressApp = express()
+
+// Pre-router middleware
+expressApp.use([ parseJSON, pinoHttpLogger ])
 
 // Routers
-expressApp.use('/api/users', usersRouter)
-// expressApp.use('/api/tasks', taskRouter)
+expressApp
+    // .use('/api/registration', registrationRouter)
+    // .use('/api/login', loginRouter)
+    .use('/api/users', usersRouter)
+    .use('/api/tasks', tasksRouter)
 
 // Application middleware
-expressApp.use(middlewares)
+expressApp.use([ handleErrors ])
+
+export {
+    expressApp
+}

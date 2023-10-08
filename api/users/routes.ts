@@ -10,7 +10,10 @@ const usersRouter = express.Router()
 
 usersRouter
     .get('/:id',       
-        validate({ params: loadSchema(usersSchema, [ 'id' ]) }),
+        validate({
+            body: loadSchema(usersSchema, []),
+            params: loadSchema(usersSchema, [ 'id' ])
+        }),
         usersHandler.getUserByUserId
     )
     .put('/:id',    
@@ -21,7 +24,10 @@ usersRouter
         usersHandler.updateUserByUserId
     )
     .delete('/:id', 
-        validate({ params: loadSchema(usersSchema, [ 'id' ]) }),
+        validate({
+            body: loadSchema(usersSchema, []),
+            params: loadSchema(usersSchema, [ 'id' ])
+        }),
         usersHandler.deleteUserByUserId
     )
 

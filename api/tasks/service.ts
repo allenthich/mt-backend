@@ -10,12 +10,11 @@ import { prisma } from '@utils/prisma'
 const getTasks = async (userId: string): Promise<Array<Task>> => {
     if (!userId) throw new AppError('Error: getTasks', StatusCodes.BAD_REQUEST, 'Invalid userId', true)
 
-    return await prisma.task
-        .findMany({
-            where: {
-                creatorId: userId,
-            },
-        })
+    return await prisma.task.findMany({
+        where: {
+            creatorId: userId,
+        },
+    })
 }
 
 const createNewTask = async (newTaskData: Prisma.TaskCreateInput, creatorId: string) => {
@@ -35,12 +34,12 @@ const createNewTask = async (newTaskData: Prisma.TaskCreateInput, creatorId: str
 
 const getTask = async (taskId: string) => {
     if (!taskId) throw new AppError('Error: getTask', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
-    return await prisma.task
-        .findUniqueOrThrow({
-            where: {
-                id: taskId,
-            },
-        })
+    
+    return await prisma.task.findUniqueOrThrow({
+        where: {
+            id: taskId,
+        },
+    })
 }
 
 const updateTask = async (taskId: string, newTaskData: Prisma.TaskUpdateInput) => {

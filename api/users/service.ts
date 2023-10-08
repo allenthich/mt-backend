@@ -8,16 +8,16 @@ import { prisma } from '@utils/prisma'
 
 const getUser = async (userId: string) => {
     if (!userId) throw new AppError('Error: getUser', StatusCodes.BAD_REQUEST, 'Invalid userId', true)
-    return await prisma.user
-        .findUniqueOrThrow({
-            where: {
-                id: userId,
-            },
-            select: {
-                email: true,
-                name: true,
-            },
-        })
+    
+    return await prisma.user.findUniqueOrThrow({
+        where: {
+            id: userId,
+        },
+        select: {
+            email: true,
+            name: true,
+        },
+    })
 }
 
 const updateUser = async (userId: string, newUserData: Prisma.UserUpdateInput) => {

@@ -11,12 +11,12 @@ const compareUserCredentials = async (existingUser: Prisma.UserCreateInput, unau
 
 const loginUser = async (unauthorizedUser: Prisma.UserCreateInput) => {
     if (!unauthorizedUser) throw new AppError('Error: loginUser', StatusCodes.BAD_REQUEST, 'Invalid login payload', true)
-    const existingUser = await prisma.user
-        .findUniqueOrThrow({
-            where: {
-                email: unauthorizedUser.email,
-            },
-        })
+    
+    const existingUser = await prisma.user.findUniqueOrThrow({
+        where: {
+            email: unauthorizedUser.email,
+        },
+    })
     if (!existingUser) throw new AppError('Error: loginUser', StatusCodes.BAD_REQUEST, 'Invalid login credentials', true)
     
     // Compare password hashs

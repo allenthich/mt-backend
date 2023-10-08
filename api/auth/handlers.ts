@@ -7,9 +7,7 @@ import { loginService } from '@auth/service'
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const credentials = await loginService.loginUser(req.body)
-        return res
-            .status(StatusCodes.OK)
-            .json(credentials)
+        return res.status(StatusCodes.OK).json(credentials)
     } catch (e) {
         next(e)
     }

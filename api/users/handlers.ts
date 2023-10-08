@@ -7,9 +7,7 @@ import { usersService } from '@users/service'
 const getUserByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await usersService.getUser(req.params.id)
-        return res
-            .status(StatusCodes.OK)
-            .json(user)
+        return res.status(StatusCodes.OK).json(user)
     } catch (e) {
         next(e)
     }
@@ -18,9 +16,7 @@ const getUserByUserId = async (req: Request, res: Response, next: NextFunction) 
 const updateUserByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await usersService.updateUser(req.params.id, req.body)
-        return res
-            .status(StatusCodes.OK)
-            .json(user)
+        return res.status(StatusCodes.OK).json(user)
     } catch (e) {
         next(e)
     }
@@ -29,9 +25,7 @@ const updateUserByUserId = async (req: Request, res: Response, next: NextFunctio
 const deleteUserByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await usersService.deleteUser(req.params.id)
-        return res
-            .status(StatusCodes.OK)
-            .json(user)
+        return res.status(StatusCodes.OK).json(user)
     } catch (e) {
         next(e)
     }

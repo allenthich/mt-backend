@@ -10,9 +10,7 @@ const getTasksByUserId = async (req: Request, res: Response, next: NextFunction)
     try {
         const userId = decodeJWTTokenUserId(req.headers.authorization)
         const tasks = await tasksService.getTasks(userId)
-        return res
-            .status(StatusCodes.OK)
-            .json(tasks)
+        return res.status(StatusCodes.OK).json(tasks)
     } catch (e) {
         next(e)
     }
@@ -22,9 +20,7 @@ const createNewTask = async (req: Request, res: Response, next: NextFunction) =>
     try {
         const userId = decodeJWTTokenUserId(req.headers.authorization)
         const task = await tasksService.createNewTask(req.body, userId)
-        return res
-            .status(StatusCodes.OK)
-            .json(task)
+        return res.status(StatusCodes.OK).json(task)
     } catch (e) {
         next(e)
     }
@@ -33,9 +29,7 @@ const createNewTask = async (req: Request, res: Response, next: NextFunction) =>
 const getTaskByTaskId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const task = await tasksService.getTask(req.params.id)
-        return res
-            .status(StatusCodes.OK)
-            .json(task)
+        return res.status(StatusCodes.OK).json(task)
     } catch (e) {
         next(e)
     }
@@ -44,9 +38,7 @@ const getTaskByTaskId = async (req: Request, res: Response, next: NextFunction) 
 const updateTaskByTaskId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const task = await tasksService.updateTask(req.params.id, req.body)
-        return res
-            .status(StatusCodes.OK)
-            .json(task)
+        return res.status(StatusCodes.OK).json(task)
     } catch (e) {
         next(e)
     }
@@ -55,9 +47,7 @@ const updateTaskByTaskId = async (req: Request, res: Response, next: NextFunctio
 const deleteTaskByTaskId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const task = await tasksService.deleteTask(req.params.id)
-        return res
-            .status(StatusCodes.OK)
-            .json(task)
+        return res.status(StatusCodes.OK).json(task)
     } catch (e) {
         next(e)
     }

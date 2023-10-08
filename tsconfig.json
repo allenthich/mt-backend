@@ -14,7 +14,8 @@
       "@tasks/*": ["api/tasks/*"],
       "@users/*": ["api/users/*"],
       "@utils/*": ["utils/*"],
-    }
+    },
+    "typeRoots": ["./types/**/.*.ts","./node_modules/@types"]
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"]

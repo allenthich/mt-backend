@@ -1,18 +1,15 @@
 // Load the Express app file and listen on port
 import 'dotenv/config'
 import { expressApp } from '@api/app'
-import { logger } from '@utils/logger'
+import { errorHandler } from '@utils/errorHandler'
 
 // Global error handling for uncaught exceptions and unhandled rejections
-process.on('uncaughtException', (err) => {
-  logger.error('Uncaught exception', err)
-  process.exit(1); // Terminate the application (1 indicates an error)
-  throw err
+process.on('uncaughtException', (err: Error) => {
+  errorHandler.handleUnknownError(err)
 })
 
-process.on('unhandledRejection', (err) => {
-  logger.error('Unhandled rejection', err)
-  process.exit(1); // Terminate the application (1 indicates an error)
+process.on('unhandledRejection', (err: Error) => {
+  errorHandler.handleUnknownError(err)
 })
 
 // Server startup

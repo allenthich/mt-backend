@@ -21,6 +21,7 @@
     "@types/node": "18.18.1",
     "pino-pretty": "^10.2.3",
     "prisma": "^5.4.1",
+    "prisma-json-schema-generator": "^4.0.0",
     "ts-node": "10.9.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",

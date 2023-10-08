@@ -1,53 +1,85 @@
 import { AllowedSchema } from 'express-json-validator-middleware'
 
-export const taskIdSchema: AllowedSchema = {
+export const tasksSchema: AllowedSchema = {
   "type": "object",
   "properties": {
-    "id": { "type": "string" },
-  },
-  "required": ["id"]
-}
-
-export const createNewTaskSchema: AllowedSchema = {
-  "type": "object",
-  "properties": {
-    "id": { "type": "string" },
-    "title": { "type": "string" },
-    "description": { "type": "string" },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "status": {
       "type": "string",
-      "enum": ["To-Do", "In Progress", "Completed"]
+      "default": "TODO",
+      "enum": [
+        "TODO",
+        "IN_PROGRESS",
+        "COMPLETED"
+      ]
     },
-    "priority": { "type": "string", "enum": ["Low", "Medium", "High"] },
-    "dueDate": { "type": "string", "format": "date-time" },
-    "assigneeId": { "type": "string" },
-    "creatorId": { "type": "string" },
-    "creationDate": { "type": "string", "format": "date-time" },
-    "lastModifiedDate": { "type": "string", "format": "date-time" },
-    "completionDate": { "type": "string", "format": "date-time" },
-    "archived": { "type": "boolean" }
-  },
-  "required": ["title", "creatorId"]
-}
-
-export const updateTaskByTaskIdSchema: AllowedSchema = {
-  "type": "object",
-  "properties": {
-    "id": { "type": "string" },
-    "title": { "type": "string" },
-    "description": { "type": "string" },
-    "status": {
+    "priority": {
       "type": "string",
-      "enum": ["To-Do", "In Progress", "Completed"]
+      "default": "LOW",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ]
     },
-    "priority": { "type": "string", "enum": ["Low", "Medium", "High"] },
-    "dueDate": { "type": "string", "format": "date-time" },
-    "assigneeId": { "type": "string" },
-    "creatorId": { "type": "string" },
-    "creationDate": { "type": "string", "format": "date-time" },
-    "lastModifiedDate": { "type": "string", "format": "date-time" },
-    "completionDate": { "type": "string", "format": "date-time" },
-    "archived": { "type": "boolean" }
-  },
-  "required": ["id"]
+    "dueDate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "assigneeId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "creator": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/User"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "creationDate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "lastModifiedDate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "completionDate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "archived": {
+      "type": "boolean",
+      "default": false
+    }
+  }
 }

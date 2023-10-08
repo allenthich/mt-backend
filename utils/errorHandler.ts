@@ -6,24 +6,44 @@ import { logger } from '@utils/logger'
 import { AppError } from '@utils/appError'
 
 class ErrorHandler {
-    public async handleError(err: AppError, res: Response, next: NextFunction): Promise<void> {
-        logger.error(err)
-        // TODO: Monitor metrics, graceful shutdown, clean up
-        // await fireMonitoringMetric(error)
-        // await crashIfUntrustedErrorOrSendResponse(error, res)
+    public handleUnknownError(err: Error): void {
+      logger.error(err)
+      process.exit(1) // Terminate the application (1 indicates an error)
+    }
 
-        if (err.isOperational) {
-          const isValidationError = err instanceof ValidationError
-          const errorDetails = isValidationError ? err.validationErrors : err.message
-          res
-            .status(err.httpCode || StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(errorDetails)
-          next()
-        } else {
-          // Graceful shutdown, do we need next here?
-          process.exit(1)
+    public async handleError(err: AppError, res: Response, next: NextFunction): Promise<void> {
+      logger.error(err)
+      // TODO: Monitor metrics, graceful shutdown, clean up
+      // await fireMonitoringMetric(error)
+      // await crashIfUntrustedErrorOrSendResponse(error, res)
+
+      if (this.isTrustedError(err)) {
+        let httpErrorCode = err.httpCode || StatusCodes.INTERNAL_SERVER_ERROR
+        const isValidationError = err instanceof ValidationError
+        let errorDetails: any = err.message
+
+        if (isValidationError) {
+          errorDetails =  err.validationErrors
+          httpErrorCode = StatusCodes.BAD_REQUEST
         }
 
+          res
+            .status(httpErrorCode)
+            .json(errorDetails)
+          next()
+      } else {
+        // Graceful shutdown, do we need next here?
+        process.exit(1) // Terminate the application (1 indicates an error)
+      }
+    }
+
+    public isTrustedError(error: Error) {
+      if (error instanceof AppError) {
+        return error.isOperational;
+      } else if (error instanceof ValidationError) {
+        return true
+      }
+      return false;
     }
   }
   

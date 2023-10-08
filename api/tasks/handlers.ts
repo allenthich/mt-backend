@@ -3,10 +3,13 @@ import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 
 import { tasksService } from '@tasks/service'
+import { decodeJWTTokenUserId } from '@utils/jwtHandler'
+
 
 const getTasksByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const tasks = await tasksService.getTasks(req.body.id)
+        const userId = decodeJWTTokenUserId(req.headers.authorization)
+        const tasks = await tasksService.getTasks(userId)
         return res
             .status(StatusCodes.OK)
             .json(tasks)
@@ -17,7 +20,8 @@ const getTasksByUserId = async (req: Request, res: Response, next: NextFunction)
 
 const createNewTask = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const task = await tasksService.createNewTask(req.body)
+        const userId = decodeJWTTokenUserId(req.headers.authorization)
+        const task = await tasksService.createNewTask(req.body, userId)
         return res
             .status(StatusCodes.OK)
             .json(task)

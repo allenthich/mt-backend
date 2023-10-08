@@ -1,3 +1,4 @@
+// TODO: Check API requester is related to acting userId
 // Strictly handles database interaction
 
 import { StatusCodes } from 'http-status-codes'
@@ -13,6 +14,10 @@ const getUser = async (userId: string) => {
             where: {
                 id: userId,
             },
+            select: {
+                email: true,
+                name: true,
+            },
         })
 }
 
@@ -25,6 +30,10 @@ const updateUser = async (userId: string, newUserData: Prisma.UserUpdateInput) =
             id: userId,
         },
         data: newUserData,
+        select: {
+            email: true,
+            name: true,
+        },
     })
 }
 
@@ -34,7 +43,11 @@ const deleteUser = async (userId: string) => {
     return await prisma.user.delete({
         where: {
             id: userId,
-        }
+        },
+        select: {
+            email: true,
+            name: true,
+        },
     })
 }
 

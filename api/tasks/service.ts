@@ -19,11 +19,18 @@ const getTasks = async (userId: string): Promise<Array<Task>> => {
         })
 }
 
-const createNewTask = async (newTaskData: Prisma.TaskCreateInput) => {
+const createNewTask = async (newTaskData: Prisma.TaskCreateInput, creatorId: string) => {
     if (!newTaskData) throw new AppError('Error: createNewTask', StatusCodes.BAD_REQUEST, 'Invalid task creation payload', true)
 
     return await prisma.task.create({
-        data: newTaskData
+        data: {
+            ...newTaskData,
+            creator: {
+                connect: {
+                    id: creatorId
+                }
+            }
+        },
     })
 }
 
@@ -52,11 +59,19 @@ const updateTask = async (taskId: string, newTaskData: Prisma.TaskUpdateInput) =
 const deleteTask = async (taskId: string) => {
     if (!taskId) throw new AppError('Error: deleteTask', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
     // TODO: Check if authorized for deletion: creator/assignee/access
-    return await prisma.task.delete({
+    const task = await prisma.task.findUniqueOrThrow({
         where: {
             id: taskId,
         }
     })
+    if (task) {
+        return await prisma.task.delete({
+            where: {
+                id: taskId,
+            }
+        })
+    }
+    return task
 }
 
 export const tasksService = {

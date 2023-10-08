@@ -8,19 +8,28 @@ import { tasksSchema } from '@tasks/schema'
 
 const tasksRouter = express.Router()
 
+// TOOD: Investigate prev API call retaining schema validation middleware unless explicitly overwritten
+
 tasksRouter
     .get('/',       
-        validate({ body: loadSchema(tasksSchema, [ 'id' ]) }),
+        validate({
+            body: loadSchema(tasksSchema, []),
+            params: loadSchema(tasksSchema, [])
+        }),
         tasksHandler.getTasksByUserId
     )
     .post('/',      
         validate({
-            body: loadSchema(tasksSchema, [ 'title', 'creatorId' ]),
+            body: loadSchema(tasksSchema, [ 'body' ]),
+            params: loadSchema(tasksSchema, [])
         }),
         tasksHandler.createNewTask
     )
     .get('/:id',    
-        validate({ params: loadSchema(tasksSchema, [ 'id' ]) }),
+        validate({
+            body: loadSchema(tasksSchema, []),
+            params: loadSchema(tasksSchema, [ 'id '])
+        }),
         tasksHandler.getTaskByTaskId
     )
     .put('/:id',    
@@ -31,7 +40,10 @@ tasksRouter
         tasksHandler.updateTaskByTaskId
     )
     .delete('/:id', 
-        validate({ params: loadSchema(tasksSchema, [ 'id' ]) }),
+        validate({
+            body: loadSchema(tasksSchema, []),
+            params: loadSchema(tasksSchema, [ 'id '])
+        }),
         tasksHandler.deleteTaskByTaskId
     )
 

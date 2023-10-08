@@ -19,5 +19,4 @@ export const usersSchema: AllowedSchema = {
       ]
     },
   },
-  "additionalProperties": false
 }

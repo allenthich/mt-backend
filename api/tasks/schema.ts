@@ -46,16 +46,6 @@ export const tasksSchema: AllowedSchema = {
         "null"
       ]
     },
-    "creator": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/User"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
     "creationDate": {
       "type": [
         "string",

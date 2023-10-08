@@ -24,12 +24,21 @@ const generateJWTToken = (userId: string, email: string) => {
     return token
 }
 
-const verifyJWTToken = (token: string) => {
+const verifyJWTToken = (token: string | undefined) => {
+    if (!token) throw new AppError('Error: verifyJWTToken', StatusCodes.UNAUTHORIZED, 'Authentication failed. Invalid token.', true) 
     return jwt.verify(token, process.env.JWT_SECRET_KEY as Secret)
+}
+
+const decodeJWTTokenUserId = (token: string | undefined) => {
+    if (!token) throw new AppError('Error: verifyJWTToken', StatusCodes.UNAUTHORIZED, 'Authentication failed. Invalid token.', true) 
+    const decoded = verifyJWTToken(token)
+    if (typeof decoded === 'string') return decoded
+    return decoded.userId
 }
 
 export {
     validateJWTToken,
     generateJWTToken,
-    verifyJWTToken
+    verifyJWTToken,
+    decodeJWTTokenUserId
 }

@@ -22,6 +22,7 @@ export const jwtPayloadSchema: AllowedSchema = {
       "sub": { "type": "string" },
       "iss": { "type": "string" },
       "exp": { "type": "integer" },
+      "iat": { "type": "integer" },
       "userId": { "type": "string" },
       "email": { "type": "string" }
   },

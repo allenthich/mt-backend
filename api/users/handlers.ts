@@ -13,7 +13,7 @@ const getUser = async (req: Request, res: Response) => {
     return res.json(users)
 }
 
-export default {
+export const usersHandler = {
     getUser,
     getUsers
 }

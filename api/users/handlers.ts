@@ -1,19 +1,44 @@
 // Services as the interface for route to service while converting cleaning req/res
-import usersService from '@users/service'
+import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 
-import { Request, Response } from 'express'
+import { usersService } from '@users/service'
 
-const getUsers = async (req: Request, res: Response) => {
-    const users = await usersService.getUsers()
-    return res.json(users)
+const getUserByUserId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await usersService.getUser(req.params.id)
+        return res
+            .status(StatusCodes.OK)
+            .json(user)
+    } catch (e) {
+        next(e)
+    }
 }
 
-const getUser = async (req: Request, res: Response) => {
-    const users = usersService.getUsers()
-    return res.json(users)
+const updateUserByUserId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await usersService.updateUser(req.params.id, req.body)
+        return res
+            .status(StatusCodes.OK)
+            .json(user)
+    } catch (e) {
+        next(e)
+    }
+}
+
+const deleteUserByUserId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await usersService.deleteUser(req.params.id)
+        return res
+            .status(StatusCodes.OK)
+            .json(user)
+    } catch (e) {
+        next(e)
+    }
 }
 
 export const usersHandler = {
-    getUser,
-    getUsers
+    getUserByUserId,
+    updateUserByUserId,
+    deleteUserByUserId,
 }

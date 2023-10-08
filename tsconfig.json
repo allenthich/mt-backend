@@ -11,6 +11,7 @@
       "@routes": ["routes.ts"],
       "@middleware": ["middleware"],
       "@middleware/*": ["middleware/*"],
+      "@auth/*": ["api/auth/*"],
       "@tasks/*": ["api/tasks/*"],
       "@users/*": ["api/users/*"],
       "@utils/*": ["utils/*"],

@@ -2,10 +2,9 @@
 // Strictly handles database interaction
 
 import { StatusCodes } from 'http-status-codes'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { AppError } from '@utils/appError'
-
-const prisma = new PrismaClient()
+import { prisma } from '@utils/prisma'
 
 const getUser = async (userId: string) => {
     if (!userId) throw new AppError('Error: getUser', StatusCodes.BAD_REQUEST, 'Invalid userId', true)

@@ -3,8 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import { Prisma, PrismaClient } from '@prisma/client'
 import { AppError } from '@utils/appError'
 import { generateJWTToken } from '@utils/jwtHandler'
-
-const prisma = new PrismaClient()
+import { prisma } from '@utils/prisma'
 
 const compareUserCredentials = async (existingUser: Prisma.UserCreateInput, unauthorizedUser: Prisma.UserCreateInput) => {
     return await bcrypt.compare(unauthorizedUser.password, existingUser.password)
@@ -27,7 +26,8 @@ const loginUser = async (unauthorizedUser: Prisma.UserCreateInput) => {
     // Generate JWT Token
     const token = generateJWTToken(existingUser.id, existingUser.email)
 
-    return { existingUser, token }
+    const { id, email, name } = existingUser
+    return { id, email, name, token }
 }
 
 export const loginService = {

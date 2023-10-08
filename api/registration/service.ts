@@ -2,11 +2,10 @@
 
 import bcrypt from 'bcrypt'
 import { StatusCodes } from 'http-status-codes'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { AppError } from '@utils/appError'
 import { generateJWTToken } from '@utils/jwtHandler'
-
-const prisma = new PrismaClient()
+import { prisma } from '@utils/prisma'
 
 const createUser = async (userData: Prisma.UserCreateInput) => {
     if (!userData) throw new AppError('Error: createUser', StatusCodes.BAD_REQUEST, 'Invalid user creation payload', true)
@@ -32,7 +31,8 @@ const createUser = async (userData: Prisma.UserCreateInput) => {
     // Generate JWT Token
     const token = generateJWTToken(user.id, user.email)
 
-    return { user, token }
+    const { id, email, name } = user
+    return { id, email, name, token }
 }
 
 export const registrationService = {

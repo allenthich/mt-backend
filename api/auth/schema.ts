@@ -12,7 +12,7 @@ export const authSchema: AllowedSchema = {
       "minLength": 8
     }
   },
-  "required": ["email", "password", "token"],
+  "required": ["email", "password"],
   "additionalProperties": false
 }
 

@@ -6,10 +6,10 @@ import { registrationService } from '@registration/service'
 
 const registerNewUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const task = await registrationService.createUser(req.body)
+        const user = await registrationService.createUser(req.body)
         return res
             .status(StatusCodes.OK)
-            .json(task)
+            .json(user)
     } catch (e) {
         next(e)
     }

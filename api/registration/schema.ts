@@ -18,12 +18,6 @@ export const registrationSchema: AllowedSchema = {
         "null"
       ]
     },
-    "tasks": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Task"
-      }
-    }
   },
   "additionalProperties": false
 }

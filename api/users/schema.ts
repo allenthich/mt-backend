@@ -9,6 +9,9 @@ export const usersSchema: AllowedSchema = {
     "email": {
       "type": "string"
     },
+    "password": {
+      "type": "string"
+    },
     "name": {
       "type": [
         "string",

@@ -1,23 +1,10 @@
 // TODO: Revisit global type declaration unrecognized
 /// <reference path="../types/express/index.d.ts" />
 
-import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 import { StatusCodes } from 'http-status-codes'
 import { Request, Response, NextFunction } from 'express'
 import { AppError } from '@utils/appError'
-import { jwtPayloadSchema } from '@api/auth/schema'
-import { validator } from '@utils/validator'
-
-// Validate decoded payload against the expected JWT Schema
-const validateJWT = (decodedToken: string | JwtPayload): Boolean => {
-  const validate = validator.ajv.compile(jwtPayloadSchema)
-  const isValid = validate(decodedToken)
-
-  if (!isValid) {
-    throw new AppError('Error: validateJWT', StatusCodes.UNAUTHORIZED, 'Authentication failed. Invalid payload schema.', true)
-  }
-  return isValid
-}
+import { validateJWTToken, verifyJWTToken } from '@utils/jwtHandler'
 
 // Define a middleware function to authenticate users
 export const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
@@ -31,10 +18,10 @@ export const authenticateUser = (req: Request, res: Response, next: NextFunction
 
   try {
     // Verify the token using your secret key
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as Secret)
+    const decoded = verifyJWTToken(token)
 
     //　Validate decoded payload against JWT Schema
-    validateJWT(decoded)
+    validateJWTToken(decoded)
 
     // Attach the decoded user information to the request object
     req.user = decoded

@@ -21,7 +21,9 @@ export const jwtPayloadSchema: AllowedSchema = {
   "properties": {
       "sub": { "type": "string" },
       "iss": { "type": "string" },
-      "exp": { "type": "integer" }
+      "exp": { "type": "integer" },
+      "userId": { "type": "string" },
+      "email": { "type": "string" }
   },
   "required": ["sub", "iss", "exp"],
   "additionalProperties": false

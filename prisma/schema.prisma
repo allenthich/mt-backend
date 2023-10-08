@@ -44,3 +44,8 @@ enum TaskPriority {
   MEDIUM
   HIGH
 }
+
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
+  output = "./"
+}

@@ -19,6 +19,7 @@ const createFakeUserWithTasks = (): Prisma.UserCreateInput => {
   const user: Prisma.UserCreateInput = {
     id: userId,
     email: faker.internet.email(),
+    password: faker.internet.password(),
     name: faker.person.firstName(),
     tasks: {
       create: [

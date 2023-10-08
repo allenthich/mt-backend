@@ -15,12 +15,6 @@ export const usersSchema: AllowedSchema = {
         "null"
       ]
     },
-    "tasks": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Task"
-      }
-    }
   },
   "additionalProperties": false
 }

@@ -2,36 +2,36 @@
 import express from 'express'
 
 import { validate } from '@utils/validator'
-import { setReqSchemaProps } from '@utils/setReqSchemaProps'
 import { tasksHandler } from '@api/tasks/handlers'
+import { loadSchema } from '@utils/loadSchema'
+import { tasksSchema } from '@tasks/schema'
 
 const tasksRouter = express.Router()
 
 tasksRouter
     .get('/',       
-        validate({ body: setReqSchemaProps([ 'id' ]) }),
+        validate({ body: loadSchema(tasksSchema, [ 'id' ]) }),
         tasksHandler.getTasksByUserId
     )
     .post('/',      
         validate({
-            body: setReqSchemaProps([ 'title', 'creatorId' ]),
-            params: setReqSchemaProps([ 'id' ])
+            body: loadSchema(tasksSchema, [ 'title', 'creatorId' ]),
         }),
         tasksHandler.createNewTask
     )
     .get('/:id',    
-        validate({ params: setReqSchemaProps([ 'id' ]) }),
+        validate({ params: loadSchema(tasksSchema, [ 'id' ]) }),
         tasksHandler.getTaskByTaskId
     )
     .put('/:id',    
         validate({
-            body: setReqSchemaProps([ 'id' ]),
-            params: setReqSchemaProps([ 'id' ])
+            body: loadSchema(tasksSchema, []),
+            params: loadSchema(tasksSchema, [ 'id' ])
         }),
         tasksHandler.updateTaskByTaskId
     )
     .delete('/:id', 
-        validate({ params: setReqSchemaProps([ 'id' ]) }),
+        validate({ params: loadSchema(tasksSchema, [ 'id' ]) }),
         tasksHandler.deleteTaskByTaskId
     )
 

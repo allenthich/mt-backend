@@ -3,7 +3,6 @@ import {
     parseJSON,
     pinoHttpLogger,
     handleErrors,
-    loadSchema,
     authenticateUser
 } from '@middleware'
 import { authRouter } from '@auth/routes'
@@ -14,7 +13,7 @@ import { tasksRouter } from '@tasks/routes'
 const expressApp = express()
 
 // Pre-router middleware
-expressApp.use([ parseJSON, pinoHttpLogger, loadSchema ])
+expressApp.use([ parseJSON, pinoHttpLogger ])
 
 // Routers
 expressApp

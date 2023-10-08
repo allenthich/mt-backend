@@ -19,7 +19,7 @@ const getTasksByUserId = async (req: Request, res: Response, next: NextFunction)
 
 const createNewTask = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if (req.body.id) throw new AppError('Error: createNewTask', StatusCodes.BAD_REQUEST, 'Invalid id', true)
+        if (!req.body.id) throw new AppError('Error: createNewTask', StatusCodes.BAD_REQUEST, 'Invalid id', true)
         const task = await tasksService.createNewTask(req.body.id)
         return res
             .status(StatusCodes.OK)
@@ -31,7 +31,7 @@ const createNewTask = async (req: Request, res: Response, next: NextFunction) =>
 
 const getTaskByTaskId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if (req.params.id) throw new AppError('Error: getTaskByTaskId', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
+        if (!req.params.id) throw new AppError('Error: getTaskByTaskId', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
         const task = await tasksService.getTask(req.params.id)
         return res
             .status(StatusCodes.OK)
@@ -43,7 +43,7 @@ const getTaskByTaskId = async (req: Request, res: Response, next: NextFunction) 
 
 const updateTaskByTaskId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if (req.params.id) throw new AppError('Error: updateTaskByTaskId', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
+        if (!req.params.id) throw new AppError('Error: updateTaskByTaskId', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
         const task = await tasksService.updateTask(req.params.id, req.body)
         return res
             .status(StatusCodes.OK)
@@ -55,7 +55,7 @@ const updateTaskByTaskId = async (req: Request, res: Response, next: NextFunctio
 
 const deleteTaskByTaskId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if (req.params.id) throw new AppError('Error: deleteTaskByTaskId', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
+        if (!req.params.id) throw new AppError('Error: deleteTaskByTaskId', StatusCodes.BAD_REQUEST, 'Invalid taskId', true)
         const task = await tasksService.deleteTask(req.params.id)
         return res
             .status(StatusCodes.OK)

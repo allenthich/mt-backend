@@ -21,5 +21,6 @@ export const usersSchema: AllowedSchema = {
         "$ref": "#/definitions/Task"
       }
     }
-  }
+  },
+  "additionalProperties": false
 }

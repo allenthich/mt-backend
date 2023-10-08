@@ -81,5 +81,6 @@ export const tasksSchema: AllowedSchema = {
       "type": "boolean",
       "default": false
     }
-  }
+  },
+  "additionalProperties": false
 }

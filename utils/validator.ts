@@ -7,4 +7,9 @@ const validator = new Validator({})
 // Add JSON Schema formats for Ajv e.g. date-time
 addFormats(validator.ajv)
 
-export const validate = validator.validate
+const validate = validator.validate
+
+export {
+    validator,
+    validate
+}

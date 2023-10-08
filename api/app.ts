@@ -3,10 +3,11 @@ import {
     parseJSON,
     pinoHttpLogger,
     handleErrors,
-    loadSchema
+    loadSchema,
+    authenticateUser
 } from '@middleware'
+import { authRouter } from '@auth/routes'
 // import { registrationRouter } from '@registration/routes'
-// import { loginRouter } from '@login/routes'
 import { usersRouter } from '@users/routes'
 import { tasksRouter } from '@tasks/routes'
 
@@ -17,10 +18,10 @@ expressApp.use([ parseJSON, pinoHttpLogger, loadSchema ])
 
 // Routers
 expressApp
+    .use('/api/auth', authRouter)
     // .use('/api/registration', registrationRouter)
-    // .use('/api/login', loginRouter)
     .use('/api/users', usersRouter)
-    .use('/api/tasks', tasksRouter)
+    .use('/api/tasks', authenticateUser, tasksRouter)
 
 // Application middleware
 expressApp.use([ handleErrors ])

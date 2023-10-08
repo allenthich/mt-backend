@@ -1,5 +1,6 @@
-import { Task, User, Prisma } from '@prisma/client'
-import { faker } from "@faker-js/faker";
+import { Prisma } from '@prisma/client'
+import { faker } from '@faker-js/faker'
+import bcrypt from 'bcrypt'
 
 const NUM_FAKE_USERS: number = 1
 
@@ -15,11 +16,15 @@ const createFakeTask = (): Prisma.TaskCreateInput => {
 }
 
 const createFakeUserWithTasks = (): Prisma.UserCreateInput => {
-  const userId = faker.string.uuid()
+  const fakePassword = faker.internet.password()
+  const saltRounds = 10
+  const salt = bcrypt.genSaltSync(saltRounds)
+  const hash = bcrypt.hashSync(fakePassword, salt)
+
   const user: Prisma.UserCreateInput = {
-    id: userId,
+    id: faker.string.uuid(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
+    password: hash,
     name: faker.person.firstName(),
     tasks: {
       create: [

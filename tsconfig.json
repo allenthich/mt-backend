@@ -12,6 +12,7 @@
       "@middleware": ["middleware"],
       "@middleware/*": ["middleware/*"],
       "@auth/*": ["api/auth/*"],
+      "@registration/*": ["api/registration/*"],
       "@tasks/*": ["api/tasks/*"],
       "@users/*": ["api/users/*"],
       "@utils/*": ["utils/*"],

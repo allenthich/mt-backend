@@ -6,6 +6,7 @@ import { AllowedSchema } from 'express-json-validator-middleware'
 
 // TODO: Distinguish multiple different schema loading
 import { authSchema } from '@auth/schema'
+import { registrationSchema } from '@registration/schema'
 import { usersSchema } from '@users/schema'
 import { tasksSchema } from '@tasks/schema'
 
@@ -13,6 +14,8 @@ const getSchemaBy = (apiRequestPath: string): AllowedSchema => {
     switch (apiRequestPath) {
         case '/api/auth':
             return authSchema
+        case '/api/registration':
+            return registrationSchema
         case '/api/users':
             return usersSchema
         case '/api/tasks':

@@ -23,13 +23,6 @@ usersRouter
         validate({ params: setReqSchemaProps([ 'id' ]) }),
         usersHandler.deleteUserByUserId
     )
-    .post('/register',      
-        validate({
-            body: setReqSchemaProps([ 'id', 'email' ]),
-            params: setReqSchemaProps([ 'id' ])
-        }),
-        usersHandler.registerNewUser
-    )
 
 export {
     usersRouter

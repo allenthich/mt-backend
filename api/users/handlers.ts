@@ -37,20 +37,8 @@ const deleteUserByUserId = async (req: Request, res: Response, next: NextFunctio
     }
 }
 
-const registerNewUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const task = await usersService.createUser(req.body)
-        return res
-            .status(StatusCodes.OK)
-            .json(task)
-    } catch (e) {
-        next(e)
-    }
-}
-
 export const usersHandler = {
     getUserByUserId,
     updateUserByUserId,
     deleteUserByUserId,
-    registerNewUser,
 }

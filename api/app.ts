@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import compression from 'compression'
 import {
     pinoHttpLogger,
@@ -13,7 +14,12 @@ import { tasksRouter } from '@tasks/routes'
 const expressApp = express()
 
 // Pre-router middleware
-expressApp.use([ express.json(), compression(), pinoHttpLogger ])
+expressApp.use([
+    cors(),
+    express.json(),
+    compression(),
+    pinoHttpLogger
+])
 
 // Routers
 expressApp

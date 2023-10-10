@@ -1,314 +1,184 @@
-# REST API Example
+# mt-backend
 
-This example shows how to implement a **REST API with TypeScript** using [Express](https://expressjs.com/) and [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client). The example uses an SQLite database file with some initial dummy data which you can find at [`./prisma/dev.db`](./prisma/dev.db).
+A backend REST API for a task management application. 
+
+## Table of contents
+
+- [Overview](#overview)
+- [Getting started](#getting-started)
+- [REST API](#REST-API)
+- [Project Structure](#project-structure)
+- [Development Scripts](#development-scripts)
+- [To do](#to-do)
+- [FAQ](#faq)
+- [References](#references)
+
+## Overview
+This REST API utilizes the following stack:
+
+- Framework - [Express.js](https://expressjs.com/)
+- Language - [TypeScript](https://www.typescriptlang.org)
+- Database - [PlanetScale: MySQL](https://planetscale.com)
+- ORM Client - [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client)
+- Auth - [JSON Web Tokens](https://jwt.io/)
+- Logging - [Pino](https://github.com/pinojs/pino)
 
 ## Getting started
 
-### 1. Download example and install dependencies
-
-Download this example:
-
-```
-npx try-prisma@latest --template typescript/rest-express
-```
-
 Install npm dependencies:
 
 ```
-cd rest-express
+cd mt-backend
 npm install
 ```
 
-<details><summary><strong>Alternative:</strong> Clone the entire repo</summary>
-
-Clone this repository:
-
-```
-git clone git@github.com:prisma/prisma-examples.git --depth=1
-```
-
-Install npm dependencies:
-
-```
-cd prisma-examples/typescript/rest-express
-npm install
-```
-
-</details>
-
-### 2. Create and seed the database
-
-Run the following command to create your SQLite database file. This also creates the `User` and `Post` tables that are defined in [`prisma/schema.prisma`](./prisma/schema.prisma):
-
-```
-npx prisma migrate dev --name init
-```
-
-When `npx prisma migrate dev` is executed against a newly created database, seeding is also triggered. The seed file in [`prisma/seed.ts`](./prisma/seed.ts) will be executed and your database will be populated with the sample data.
-
-
-### 3. Start the REST API server
+Start the REST API server:
 
 ```
 npm run dev
 ```
 
-The server is now running on `http://localhost:3000`. You can now run the API requests, e.g. [`http://localhost:3000/feed`](http://localhost:3000/feed).
+The server is now running on `http://localhost:8080`.
 
-## Using the REST API
+## REST API
+Please refer to the endpoint's `schema.ts` for valid request payload properties.
 
-You can access the REST API of the server using the following endpoints:
-
-### `GET`
-
-- `/post/:id`: Fetch a single post by its `id`
-- `/feed?searchString={searchString}&take={take}&skip={skip}&orderBy={orderBy}`: Fetch all _published_ posts
-  - Query Parameters
-    - `searchString` (optional): This filters posts by `title` or `content`
-    - `take` (optional): This specifies how many objects should be returned in the list
-    - `skip` (optional): This specifies how many of the returned objects in the list should be skipped
-    - `orderBy` (optional): The sort order for posts in either ascending or descending order. The value can either `asc` or `desc`
-- `/user/:id/drafts`: Fetch user's drafts by their `id`
-- `/users`: Fetch all users
-### `POST`
-
-- `/post`: Create a new post
+### `/api/users`
+Required: HTTP Authorization request header JWT Token
+- `GET /api/users/:id` : Fetch a user by their `id`
+- `PUT /api/users/:id` : Update a user by their `id`
+- `DELETE /api/users/:id` : Delete user by their `id`
+  
+### `/api/tasks`
+Required: HTTP Authorization request header JWT Token
+- `GET /api/tasks` : Fetch all tasks created by authorized user
+- `POST /api/tasks` : Create a new task
   - Body:
-    - `title: String` (required): The title of the post
-    - `content: String` (optional): The content of the post
-    - `authorEmail: String` (required): The email of the user that creates the post
-- `/signup`: Create a new user
+    - `title: String` (required): The title of the task
+    - `description: String` (optional): The content of the task
+- `GET /api/tasks/:id`
+  - Fetch a task by their `id`
+- `PUT /api/tasks/:id`
+  - Update a task by their `id`
+- `DELETE /api/tasks/:id`
+  - Delete task by their `id`
+
+### `/api/registration`
+- `POST /api/registration` : Create a new user
   - Body:
-    - `email: String` (required): The email address of the user
-    - `name: String` (optional): The name of the user
-    - `postData: PostCreateInput[]` (optional): The posts of the user
-
-### `PUT`
-
-- `/publish/:id`: Toggle the publish value of a post by its `id`
-- `/post/:id/views`: Increases the `viewCount` of a `Post` by one `id`
-
-### `DELETE`
-
-- `/post/:id`: Delete a post by its `id`
-
-
-## Evolving the app
-
-Evolving the application typically requires two steps:
-
-1. Migrate your database using Prisma Migrate
-1. Update your application code
-
-For the following example scenario, assume you want to add a "profile" feature to the app where users can create a profile and write a short bio about themselves.
-
-### 1. Migrate your database using Prisma Migrate
-
-The first step is to add a new table, e.g. called `Profile`, to the database. You can do this by adding a new model to your [Prisma schema file](./prisma/schema.prisma) file and then running a migration afterwards:
-
-```diff
-// ./prisma/schema.prisma
-
-model User {
-  id      Int      @default(autoincrement()) @id
-  name    String?
-  email   String   @unique
-  posts   Post[]
-+ profile Profile?
-}
-
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  viewCount Int      @default(0)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
-+model Profile {
-+  id     Int     @default(autoincrement()) @id
-+  bio    String?
-+  user   User    @relation(fields: [userId], references: [id])
-+  userId Int     @unique
-+}
-```
-
-Once you've updated your data model, you can execute the changes against your database with the following command:
-
-```
-npx prisma migrate dev --name add-profile
-```
-
-This adds another migration to the `prisma/migrations` directory and creates the new `Profile` table in the database.
-
-### 2. Update your application code
-
-You can now use your `PrismaClient` instance to perform operations against the new `Profile` table. Those operations can be used to implement API endpoints in the REST API.
-
-#### 2.1 Add the API endpoint to your app
-
-Update your `index.ts` file by adding a new endpoint to your API:
-
-```ts
-app.post('/user/:id/profile', async (req, res) => {
-  const { id } = req.params
-  const { bio } = req.body
-
-  const profile = await prisma.profile.create({
-    data: {
-      bio,
-      user: {
-        connect: {
-          id: Number(id)
-        }
-      }
-    }
-  })
-
-  res.json(profile)
-})
-```
-
-#### 2.2 Testing out your new endpoint
-
-Restart your application server and test out your new endpoint.
-
-##### `POST`
-
-- `/user/:id/profile`: Create a new profile based on the user id
+    - `email: String` (required): The email of the user
+    - `password: String` (required): The password of the user
+### `/api/auth`
+- `POST /api/auth` : Validate a user's HTTP Authorization request header JWT Token
+  - Response:
+    - `validToken: Boolean` : Whether the JWT Token is valid
+- `POST /api/auth/login` : Authenticate a user
   - Body:
-    - `bio: String` : The bio of the user
+    - `email: String` (required): The email of the user
+    - `password: String` (required): The password of the user
 
-
-<details><summary>Expand to view more sample Prisma Client queries on <code>Profile</code></summary>
-
-Here are some more sample Prisma Client queries on the new <code>Profile</code> model:
-
-##### Create a new profile for an existing user
-
-```ts
-const profile = await prisma.profile.create({
-  data: {
-    bio: 'Hello World',
-    user: {
-      connect: { email: 'alice@prisma.io' },
-    },
-  },
-})
+## Project Structure
+The API follows a route/component-based colocation structure.
+```
+├── api
+│   ├── auth            // Authentication, login
+│   ├── registration
+│   ├── tasks
+│   ├── users
+│   │   ├── handlers.ts // Controllers to unpack web layer
+│   │   ├── routes.ts   // Collect API endpoints into router
+│   │   ├── schema.ts   // JSON Schemas for related route
+│   │   └── service.ts  // Database access layer
+│   └── app.ts          // APIs for Task model
+├── middleware
+├── prisma
+│   ├── data.ts         // Dummy database data
+│   ├── schema.prisma   // Database model
+│   └── seed.ts
+├── types
+├── utils               // APIs for Task model
+└── tsconfig.json
+└── server.ts           // Entry
+```
+## Development Scripts
+### Prisma
+#### Sync local schema with PlanetScale database schema
+```
+npx prisma db push
 ```
 
-##### Create a new user with a new profile
-
-```ts
-const user = await prisma.user.create({
-  data: {
-    email: 'john@prisma.io',
-    name: 'John',
-    profile: {
-      create: {
-        bio: 'Hello World',
-      },
-    },
-  },
-})
+#### Manually generate seed data with Prisma
+`User` and `Task` tables are defined in [`prisma/schema.prisma`](./prisma/schema.prisma).
+The seed file in [`prisma/seed.ts`](./prisma/seed.ts) **clears** the existing connected database and writes dummy data.
+```
+npx prisma db seed
 ```
 
-##### Update the profile of an existing user
-
-```ts
-const userWithUpdatedProfile = await prisma.user.update({
-  where: { email: 'alice@prisma.io' },
-  data: {
-    profile: {
-      update: {
-        bio: 'Hello Friends',
-      },
-    },
-  },
-})
+#### Generate JSON Schema from Prisma Schema
+This uses [prisma-json-schema-generator](https://github.com/valentinpalkovic/prisma-json-schema-generator) to generate a [JSON Schema v7](https://json-schema.org/) defined in [`prisma/schema.prisma`](./prisma/schema.prisma):
 ```
+npx prisma generate
+```
+#### Prisma Database GUI
+```
+npx prisma studio
+```
+## To do
+- [ ] Use `Bearer` standard for HTTP request header authorization
+- [ ] Add user authorization check for self /users and created /tasks only
+- [ ] Document return responses from API
+- [ ] Standardize Error responses across all potential Error types
+- [ ] Rewrite API endpoint /users/tasks to fetch task of user
+- [ ] Write tests for API endpoints
+- [ ] Prisma Validator
+- [ ] API Versioning
+- [ ] http-status-codes ReasonPhrases usage?
+
+## References
+<details><summary><strong>Notes</strong></summary>
+
+MySQL database tables have been created and defined using Prisma. 
+
+Models and schemas are validated through middleware and follow JSON Schema.
 
 </details>
+<details><summary><strong>Other sources</strong></summary>
 
-## Switch to another database (e.g. PostgreSQL, MySQL, SQL Server, MongoDB)
+## General
+https://www.prisma.io/typescript
+https://www.prisma.io/express
 
-If you want to try this example with another database than SQLite, you can adjust the the database connection in [`prisma/schema.prisma`](./prisma/schema.prisma) by reconfiguring the `datasource` block. 
+### Prisma
+https://www.prisma.io/docs/concepts/components/prisma-client/advanced-type-safety#importing-generated-types
+https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#create-a-related-record   
 
-Learn more about the different connection configurations in the [docs](https://www.prisma.io/docs/reference/database-reference/connection-urls).
+#### Database Seeding
+https://www.prisma.io/docs/guides/migrate/seed-database#example-seed-scripts
+https://dev.to/isnan__h/seeding-your-database-with-prisma-orm-935
+https://planetscale.com/blog/how-to-seed-a-database-with-prisma-and-next-js#branching-in-planetscale
 
-<details><summary>Expand for an overview of example configurations with different databases</summary>
+## Reading Material
+https://blog.treblle.com/egergr/
+https://blog.treblle.com/the-10-rest-commandments/
+https://github.com/goldbergyoni/nodebestpractices?ref=blog.treblle.com
+https://www.codemzy.com/blog/nodejs-file-folder-structure
+https://www.codemzy.com/blog/nodejs-api-versioning
 
-### PostgreSQL
+## Error Handling
+https://expressjs.com/en/guide/error-handling.html
+https://sematext.com/blog/expressjs-best-practices/#how-to-structure-express-js-applications
 
-For PostgreSQL, the connection URL has the following structure:
+## Extend Express Request Object
+https://blog.logrocket.com/extend-express-request-object-typescript/
 
-```prisma
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA"
-}
-```
+## Express Middleware JSON Schema data validation
+https://www.npmjs.com/package/express-json-validator-middleware
+https://simonplend.com/how-to-handle-request-validation-in-your-express-api/#how-to-integrate-validation-with-json-schemas-into-your-application
 
-Here is an example connection string with a local PostgreSQL database:
+## JWT
+https://dev.to/knitesh/securing-your-json-web-tokens-with-jwt-schema-validation-in-javascript-29p1
 
-```prisma
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://janedoe:mypassword@localhost:5432/notesapi?schema=public"
-}
-```
-
-### MySQL
-
-For MySQL, the connection URL has the following structure:
-
-```prisma
-datasource db {
-  provider = "mysql"
-  url      = "mysql://USER:PASSWORD@HOST:PORT/DATABASE"
-}
-```
-
-Here is an example connection string with a local MySQL database:
-
-```prisma
-datasource db {
-  provider = "mysql"
-  url      = "mysql://janedoe:mypassword@localhost:3306/notesapi"
-}
-```
-
-### Microsoft SQL Server
-
-Here is an example connection string with a local Microsoft SQL Server database:
-
-```prisma
-datasource db {
-  provider = "sqlserver"
-  url      = "sqlserver://localhost:1433;initial catalog=sample;user=sa;password=mypassword;"
-}
-```
-
-### MongoDB
-
-Here is an example connection string with a local MongoDB database:
-
-```prisma
-datasource db {
-  provider = "mongodb"
-  url      = "mongodb://USERNAME:PASSWORD@HOST/DATABASE?authSource=admin&retryWrites=true&w=majority"
-}
-```
+## Connecting Client Front end to REST API
+https://create-react-app.dev/docs/deployment#other-solutions
 
 </details>
-
-## Next steps
-
-- Check out the [Prisma docs](https://www.prisma.io/docs)
-- Share your feedback in the [`#product-wishlist`](https://prisma.slack.com/messages/CKQTGR6T0/) channel on the [Prisma Slack](https://slack.prisma.io/)
-- Create issues and ask questions on [GitHub](https://github.com/prisma/prisma/)
-- Watch our biweekly "What's new in Prisma" livestreams on [Youtube](https://www.youtube.com/channel/UCptAHlN1gdwD89tFM3ENb6w)

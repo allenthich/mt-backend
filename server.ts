@@ -13,7 +13,7 @@ process.on('unhandledRejection', (err: Error) => {
 })
 
 // Server startup
-const port = process.env.APP_PORT || 9000;
+const port = process.env.APP_PORT || 8080;
 expressApp.listen(port, () =>
   console.log(`
     🚀 Server ready at: http://localhost:${port}

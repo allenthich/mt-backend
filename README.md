@@ -32,6 +32,14 @@ cd mt-backend
 npm install
 ```
 
+Populate `.env` values:
+
+```
+DATABASE_URL="..."
+JWT_SECRET_KEY="..."
+JWT_ISSUER="..."
+```
+
 Start the REST API server:
 
 ```

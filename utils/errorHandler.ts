@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { ValidationError } from 'express-json-validator-middleware'
+import { JsonWebTokenError } from 'jsonwebtoken'
 
 import { logger } from '@utils/logger'
 import { AppError } from '@utils/appError'
@@ -47,6 +48,8 @@ class ErrorHandler {
       } else if (error instanceof ValidationError) {
         return true
       } else if (error instanceof PrismaClientKnownRequestError) {
+        return true
+      } else if (error instanceof JsonWebTokenError) {
         return true
       }
       return false;

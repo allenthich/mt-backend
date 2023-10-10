@@ -9,6 +9,12 @@ import { authSchema } from '@auth/schema'
 const authRouter = express.Router()
 
 authRouter
+    .post('/',      
+        validate({
+            body: loadSchema(authSchema, [])
+        }),
+        authHandler.validateUserJWTToken
+    )
     .post('/login',      
         validate({
             body: loadSchema(authSchema, [ 'email', 'password' ])

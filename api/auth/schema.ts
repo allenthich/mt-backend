@@ -9,7 +9,6 @@ export const authSchema: AllowedSchema = {
     },
     "password": {
       "type": "string",
-      "minLength": 8
     }
   },
   "required": ["email", "password"],

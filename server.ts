@@ -13,9 +13,9 @@ process.on('unhandledRejection', (err: Error) => {
 })
 
 // Server startup
-const port = process.env.PORT || 3000;
+const port = process.env.APP_PORT || 9000;
 expressApp.listen(port, () =>
   console.log(`
-    🚀 Server ready at: http://localhost:3000
+    🚀 Server ready at: http://localhost:${port}
     ⭐️ See sample requests: http://pris.ly/e/ts/rest-express#3-using-the-rest-api`),
 )

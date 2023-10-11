@@ -36,6 +36,8 @@ Populate `.env` values:
 
 ```
 DATABASE_URL="..."
+
+# For local testing, set to any unique value
 JWT_SECRET_KEY="..."
 JWT_ISSUER="..."
 ```

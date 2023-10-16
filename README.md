@@ -8,9 +8,9 @@ A backend REST API for a task management application.
 - [Getting started](#getting-started)
 - [REST API](#REST-API)
 - [Project Structure](#project-structure)
+- [Deployment](#deployment)
 - [Development Scripts](#development-scripts)
 - [To do](#to-do)
-- [FAQ](#faq)
 - [References](#references)
 
 ## Overview
@@ -88,9 +88,10 @@ Required: HTTP Authorization request header JWT Token
     - `password: String` (required): The password of the user
 
 ## Project Structure
-The API follows a route/component-based colocation structure.
+The API follows a route/component-based colocation structure. `_` prefixed folders are excluded from Vercel deployment configuring them as Serverless functions. `api` is a mandatory Vercel-specific folder name restriction for Serverless functions.
 ```
-├── api
+├── api                 // Build output for Vercel deployment
+├── _api                // Source
 │   ├── auth            // Authentication, login
 │   ├── registration
 │   ├── tasks
@@ -100,16 +101,18 @@ The API follows a route/component-based colocation structure.
 │   │   ├── schema.ts   // JSON Schemas for related route
 │   │   └── service.ts  // Database access layer
 │   └── app.ts          // APIs for Task model
-├── middleware
+├── _middleware
 ├── prisma
 │   ├── data.ts         // Dummy database data
 │   ├── schema.prisma   // Database model
 │   └── seed.ts
-├── types
-├── utils               // APIs for Task model
+├── _types
+├── _utils               // APIs for Task model
 └── tsconfig.json
-└── server.ts           // Entry
+└── server.ts            // Entry
 ```
+## Deployment
+This application is currently setup to deploy to Vercel as a Serverless function. Upon running `npm run build-api`, an `api` directory is created for Vercel to recognize. However, with the project structure focused on separating concerns and the use of TypeScript path aliasing, `server.ts` is the only file configured to run as a serverless function due to Vercel's limitations.
 ## Development Scripts
 ### Prisma
 #### Sync local schema with PlanetScale database schema

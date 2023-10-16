@@ -1,8 +1,9 @@
 {
-    "functions": {
-      "api/app.ts": {
-        "memory": 1024,
-        "maxDuration": 10
-      }
+  "functions": {
+    "api/server.js": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  }
+  },
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/server.js" }]
+}

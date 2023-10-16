@@ -4,23 +4,23 @@
     "module": "Node16",
     "moduleResolution": "Node16",
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "api",
     "strict": true,
     "lib": ["esnext"],
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["api", "api/*"],
+      "@api/*": ["_api", "_api/*"],
       "@routes": ["routes.ts"],
-      "@middleware": ["middleware"],
-      "@middleware/*": ["middleware/*"],
-      "@auth/*": ["api/auth/*"],
-      "@registration/*": ["api/registration/*"],
-      "@tasks/*": ["api/tasks/*"],
-      "@users/*": ["api/users/*"],
-      "@utils/*": ["utils/*"],
+      "@middleware": ["_middleware"],
+      "@middleware/*": ["_middleware/*"],
+      "@auth/*": ["_api/auth/*"],
+      "@registration/*": ["_api/registration/*"],
+      "@tasks/*": ["_api/tasks/*"],
+      "@users/*": ["_api/users/*"],
+      "@utils/*": ["_utils/*"],
     },
-    "typeRoots": ["./types/**/.*.ts","./node_modules/@types"]
+    "typeRoots": ["_types/**/.*.ts","./node_modules/@types"]
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"]

@@ -114,6 +114,14 @@ The API follows a route/component-based colocation structure. `_` prefixed folde
 ## Deployment
 This application is currently setup to deploy to Vercel as a Serverless function. Upon running `npm run build-api`, an `api` directory is created for Vercel to recognize. However, with the project structure focused on separating concerns and the use of TypeScript path aliasing, `server.ts` is the only file configured to run as a serverless function due to Vercel's limitations.
 ## Development Scripts
+### Vercel Deployment
+#### Preview deployment with commit
+```
+npm run build-api
+```
+```
+vercel
+```
 ### Prisma
 #### Sync local schema with PlanetScale database schema
 ```

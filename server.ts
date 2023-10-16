@@ -1,7 +1,7 @@
 // Load the Express app file and listen on port
 import 'dotenv/config'
-import { expressApp } from '@api/app'
-import { errorHandler } from '@utils/errorHandler'
+import expressApp from '@api/app'
+import { errorHandler } from '_utils/errorHandler'
 
 // Global error handling for uncaught exceptions and unhandled rejections
 process.on('uncaughtException', (err: Error) => {
@@ -19,3 +19,5 @@ expressApp.listen(port, () =>
     🚀 Server ready at: http://localhost:${port}
     ⭐️ See sample requests: http://pris.ly/e/ts/rest-express#3-using-the-rest-api`),
 )
+
+export default expressApp
